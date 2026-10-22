@@ -1,0 +1,11 @@
+The procedural pixels in synthetic_tilt_up.avi are dedicated to CC0 1.0:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+To the extent possible under law, softjelly1 and ContestTeam Contributors
+waive all copyright and related rights in these generated texture/control
+pixels. There is no third-party footage, person, logo or audio.
+
+Generation: shotcheck.synthetic.write_clip(path, translating(17, 0, 5)).
+17 frames, 192x144, 24 fps; content moves downward 5 pixels per frame,
+representing the screen-flow expectation for a camera tilt upward.
+The Python generator and application source remain MIT-licensed.

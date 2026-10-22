@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shotcheck"
+version = "0.1.0"
+description = "CPU screen-motion checks through Comfy SDK and local ComfyUI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "softjelly1 and ContestTeam Contributors"}]
+dependencies = [
+  "comfy-sdk==0.5.0",
+  "comfy-api-proxy==0.1.6",
+  "opencv-python==5.0.0.93",
+  "numpy>=2,<3",
+  "torch>=2.10",
+]
+
+[project.scripts]
+shotcheck = "shotcheck.cli:main"
+
+[tool.setuptools]
+packages = ["shotcheck"]

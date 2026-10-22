@@ -1,0 +1,257 @@
+{
+  "status": "PARTIAL",
+  "started_utc": "2026-10-21T04:48:45.337480+00:00",
+  "repo": "<repo>",
+  "fresh_copy": "<fresh-copy>",
+  "fresh_venv": "<fresh-venv>",
+  "stages": {
+    "existing_runtime_copy_tests": {
+      "command": [
+        "<venv>/Scripts/python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "<fresh-copy>",
+      "exit_code": 0,
+      "wall_seconds": 60.616237,
+      "log": "<evidence>/existing_runtime_copy_tests.log",
+      "output": "test_existing_output_is_not_overwritten (test_cli.CliSmokeTests.test_existing_output_is_not_overwritten) ... ok\ntest_inconclusive_is_explicitly_not_a_pass (test_cli.CliSmokeTests.test_inconclusive_is_explicitly_not_a_pass) ... ok\ntest_mismatch_is_printed (test_cli.CliSmokeTests.test_mismatch_is_printed) ... ok\ntest_refuses_nonlocal_proxy_before_sdk_call (test_cli.CliSmokeTests.test_refuses_nonlocal_proxy_before_sdk_call) ... ok\ntest_sdk_graph_download_and_saved_json (test_cli.CliSmokeTests.test_sdk_graph_download_and_saved_json) ... ok\ntest_dolly_in_one_percent_and_opposite (test_controls.SyntheticControls.test_dolly_in_one_percent_and_opposite) ... ok\ntest_pan_right_five_pixels_and_opposite (test_controls.SyntheticControls.test_pan_right_five_pixels_and_opposite) ... ok\ntest_static (test_controls.SyntheticControls.test_static) ... ok\ntest_tilt_up_five_pixels_and_opposite (test_controls.SyntheticControls.test_tilt_up_five_pixels_and_opposite) ... ok\ntest_cache_fingerprint_changes_with_clip_bytes (test_node.NodeTests.test_cache_fingerprint_changes_with_clip_bytes) ... ok\ntest_identical_textured_frames_pass_static_gate (test_node.NodeTests.test_identical_textured_frames_pass_static_gate) ... ok\ntest_moving_clip_fails_static_gate (test_node.NodeTests.test_moving_clip_fails_static_gate) ... ok\ntest_rejects_remote_input_and_invalid_direction (test_node.NodeTests.test_rejects_remote_input_and_invalid_direction) ... ok\ntest_tilt_up_matches_inverse_screen_flow (test_node.NodeTests.test_tilt_up_matches_inverse_screen_flow) ... ok\ntest_untextured_clip_remains_inconclusive (test_node.NodeTests.test_untextured_clip_remains_inconclusive) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 6.533s\n\nOK\n"
+    },
+    "module_cli_help": {
+      "command": [
+        "<venv>/Scripts/python.exe",
+        "-m",
+        "shotcheck",
+        "--help"
+      ],
+      "cwd": "<fresh-copy>",
+      "exit_code": 0,
+      "wall_seconds": 54.124335,
+      "log": "<evidence>/module_cli_help.log"
+    },
+    "comfy_startup": {
+      "command": [
+        "<venv>/Scripts/python.exe",
+        "<comfyui>/main.py",
+        "--cpu",
+        "--offline",
+        "--disable-auto-launch",
+        "--listen",
+        "127.0.0.1",
+        "--port",
+        "64733",
+        "--disable-all-custom-nodes",
+        "--whitelist-custom-nodes",
+        "shotcheck_product_v6tfcufs"
+      ],
+      "pid": 81408,
+      "wall_seconds": 257.436293,
+      "status": "PASS"
+    },
+    "proxy_startup": {
+      "command": [
+        "<venv>/Scripts/python.exe",
+        "-c",
+        "from comfy_api_proxy.cli import main; raise SystemExit(main())",
+        "--comfyui",
+        "http://127.0.0.1:64733",
+        "--port",
+        "64734"
+      ],
+      "pid": 57296,
+      "wall_seconds": 15.638686,
+      "status": "PASS"
+    },
+    "cli_bundled_example": {
+      "command": [
+        "<venv>/Scripts/python.exe",
+        "-m",
+        "shotcheck",
+        "run",
+        "<fresh-copy>/examples/synthetic_tilt_up.avi",
+        "--intent",
+        "tilt_up",
+        "--comfy-url",
+        "http://127.0.0.1:64733",
+        "--proxy-url",
+        "http://127.0.0.1:64734",
+        "--out",
+        "<evidence>/cli_bundled_example"
+      ],
+      "cwd": "<fresh-copy>",
+      "exit_code": 0,
+      "wall_seconds": 30.946456,
+      "log": "<evidence>/cli_bundled_example.log",
+      "counts": {
+        "match": 4,
+        "mismatch": 0,
+        "unknown": 0
+      },
+      "confidence": 1.0,
+      "runtime": {
+        "device": "cpu",
+        "wall_seconds": 0.359732,
+        "process_cpu_seconds": 0.265625,
+        "includes": "video decode, unchanged verifier, first-frame overlay"
+      },
+      "sdk_job_id": "bff0a739-6706-4c0a-8011-601d448f59d7",
+      "overlay": "<evidence>/cli_bundled_example/overlay.png",
+      "json": "<evidence>/cli_bundled_example/verdict.json",
+      "output": "Running CPU ShotCheck graph through Comfy SDK: tilt_up\nAbstention is a feature: INCONCLUSIVE means ambiguous/insufficient evidence, never a pass.\nScreen-flow label agreement only; not physical 3D camera pose.\nSEGMENT   FRAMES       RESULT         CONFIDENCE   MOTION\n1         0-4          MATCH          1.0000       scene_down\n2         4-8          MATCH          1.0000       scene_down\n3         8-12         MATCH          1.0000       scene_down\n4         12-16        MATCH          1.0000       scene_down\nSummary: 4 match, 0 mismatch, 0 inconclusive\nOverlay: <evidence>/cli_bundled_example/overlay.png\nJSON: <evidence>/cli_bundled_example/verdict.json\n"
+    },
+    "cli_hf_tilt": {
+      "command": [
+        "<venv>/Scripts/python.exe",
+        "-m",
+        "shotcheck",
+        "run",
+        "<test-inputs>/tilt_up/clip.mp4",
+        "--intent",
+        "tilt_up",
+        "--comfy-url",
+        "http://127.0.0.1:64733",
+        "--proxy-url",
+        "http://127.0.0.1:64734",
+        "--out",
+        "<evidence>/cli_hf_tilt"
+      ],
+      "cwd": "<fresh-copy>",
+      "exit_code": 0,
+      "wall_seconds": 43.966299,
+      "log": "<evidence>/cli_hf_tilt.log",
+      "counts": {
+        "match": 4,
+        "mismatch": 0,
+        "unknown": 0
+      },
+      "confidence": 0.9733,
+      "runtime": {
+        "device": "cpu",
+        "wall_seconds": 3.38262,
+        "process_cpu_seconds": 2.890625,
+        "includes": "video decode, unchanged verifier, first-frame overlay"
+      },
+      "sdk_job_id": "1db69cee-4299-4804-91cc-ab99735b00e7",
+      "overlay": "<evidence>/cli_hf_tilt/overlay.png",
+      "json": "<evidence>/cli_hf_tilt/verdict.json",
+      "output": "Running CPU ShotCheck graph through Comfy SDK: tilt_up\nAbstention is a feature: INCONCLUSIVE means ambiguous/insufficient evidence, never a pass.\nScreen-flow label agreement only; not physical 3D camera pose.\nSEGMENT   FRAMES       RESULT         CONFIDENCE   MOTION\n1         0-12         MATCH          0.9733       scene_down\n2         12-24        MATCH          0.9889       scene_down\n3         24-36        MATCH          0.9743       scene_down\n4         36-48        MATCH          0.9763       scene_down\nSummary: 4 match, 0 mismatch, 0 inconclusive\nOverlay: <evidence>/cli_hf_tilt/overlay.png\nJSON: <evidence>/cli_hf_tilt/verdict.json\n"
+    }
+  },
+  "shutdown": [
+    {
+      "pids": [
+        83156,
+        57296
+      ],
+      "all_stopped": true
+    },
+    {
+      "pids": [
+        78612,
+        81408
+      ],
+      "all_stopped": true
+    }
+  ],
+  "paid_calls": false,
+  "api_key_used": false,
+  "previous_attempts": [
+    {
+      "status": "FAIL",
+      "started_utc": "2026-10-21T04:26:13.834299+00:00",
+      "repo": "<repo>",
+      "fresh_copy": "<fresh-copy>",
+      "fresh_venv": "<fresh-venv>",
+      "stages": {
+        "generate_cc0_example": {
+          "command": [
+            "<venv>/Scripts/python.exe",
+            "-c",
+            "from pathlib import Path; from shotcheck.synthetic import write_clip, translating; p=write_clip(Path('<repo>/examples/synthetic_tilt_up.avi'), translating(17,0,5)); print(p, p.stat().st_size)"
+          ],
+          "cwd": "<repo>",
+          "exit_code": 0,
+          "wall_seconds": 6.90262,
+          "log": "<workspace>/proof_t_qkzxrn/generate_cc0_example.log"
+        }
+      },
+      "shutdown": [],
+      "paid_calls": false,
+      "api_key_used": false,
+      "previous_attempts": [
+        {
+          "status": "FAIL",
+          "started_utc": "2026-10-21T04:12:53.085959+00:00",
+          "repo": "<repo>",
+          "fresh_copy": "<fresh-copy>",
+          "fresh_venv": "<fresh-venv>",
+          "stages": {
+            "generate_cc0_example": {
+              "command": [
+                "<venv>/Scripts/python.exe",
+                "-c",
+                "from pathlib import Path; from shotcheck.synthetic import write_clip, translating; p=write_clip(Path('<repo>/examples/synthetic_tilt_up.avi'), translating(17,0,5)); print(p, p.stat().st_size)"
+              ],
+              "cwd": "<workspace>",
+              "exit_code": 1,
+              "wall_seconds": 752.332694,
+              "log": "<workspace>/proof/generate_cc0_example.log"
+            }
+          },
+          "shutdown": [],
+          "paid_calls": false,
+          "api_key_used": false,
+          "error": {
+            "type": "RuntimeError",
+            "message": "generate_cc0_example exited 1; see <workspace>/proof/generate_cc0_example.log"
+          },
+          "finished_utc": "2026-10-21T04:25:25.605816+00:00"
+        }
+      ],
+      "recovery": "Generator now runs from the repo root; the parent directory selected the ComfyUI entry package instead of the CLI package.",
+      "error": {
+        "type": "TimeoutExpired",
+        "message": "Command '['<system-python>', '-m', 'pip', '--python', '<fresh-venv>', 'install', 'torch', '--index-url', 'https://download.pytorch.org/whl/cpu']' timed out after 1200 seconds"
+      },
+      "finished_utc": "2026-10-21T04:46:39.720361+00:00"
+    }
+  ],
+  "fresh_venv_status": "BLOCKED: fresh CPU Torch install timed out after 1200 seconds; not retried.",
+  "verification_runtime": "<venv>/Scripts/python.exe",
+  "recovery": "Independent checks use the already-verified existing runtime on the fresh repository copy; this is NOT a fresh-venv pass.",
+  "existing_runtime": {
+    "isolated": true,
+    "cuda": null,
+    "versions": {
+      "torch": "2.14.1+cpu",
+      "numpy": "2.5.2",
+      "opencv-python": "5.0.0.93",
+      "comfy-sdk": "0.5.0",
+      "comfy-api-proxy": "0.1.6"
+    }
+  },
+  "source_sha256": {
+    ".gitignore": "cbd1d68fdd9f2fc2cb1503ea6fbec70f4f2241d61af158e4ee85c135dcd2a8a0",
+    "LICENSE": "f4dca34b5e0e8268f1d2f2d7f73853178b719dd3ddc1dd9b59193fe124e4fb37",
+    "pyproject.toml": "738d097a9f48f4523df777831fe5ad2ef9100bcc63d95219ab4ea0ec4f9c3f1d",
+    "README.md": "3755abcb62884ce46f96dca1df0d0f4e2960b2bed316cd456af31e65b367ded7",
+    "__init__.py": "bc8dc5c5fdea13c9242cfc4e6db164b7b57b86951a7b95fc1d82f75959e216c0",
+    "examples\\LICENSE.txt": "f050bd9f8084df6bd6fbad59694f861c1833dfc27fd1caedd2f8519a0c9f78a9",
+    "examples\\synthetic_tilt_up.avi": "9f63793c12b04236e3aa013296dd9e38418caffba337ea24d7fe53e5db070a69",
+    "shotcheck\\cli.py": "1b432ac1c9c2ff6c6e1ba5bec6d234879abe7385bc92aba80da27dd1c2189ad2",
+    "shotcheck\\motion_verifier.py": "5d8d1263f023aadf2eb030d8b3cc7870a2fdab5685f0943748fd3f1eaee338eb",
+    "shotcheck\\node.py": "5208bce3c2372a5203fca81323be1079baed428565f4299946a705995a344b1d",
+    "shotcheck\\synthetic.py": "3d75ae888a76148a2489a3f2b06f4ef3390bcf409c2a211396dc4ff5c0b09d76",
+    "shotcheck\\__init__.py": "fde08e9c4e017109f7164089de8ab40a24611602f6286c10e9fa653da0f670fd",
+    "shotcheck\\__main__.py": "8ba25604453e1073429d6b3f11364fb7698e94dacb945fa853ad26555cfd01fc",
+    "tests\\test_cli.py": "ca1fc60f38a86db955fd0c6a9cff14f2b88508badee0034c5149375b7902072a",
+    "tests\\test_controls.py": "461a7da248e7872479bdb2bd323afc913527421caf5350b6b2ae4b2780e0208d",
+    "tests\\test_node.py": "67597e6aa6cf5c8e61452fea4b1a56fd574542e403a7021fb0b33cb77ca4da73",
+    "tests\\__init__.py": "5be230fa13a76b43315ce684e1e849c7104db7aa30af69f7d91144b4b665e2d3"
+  },
+  "finished_utc": "2026-10-21T04:57:21.299431+00:00"
+}
