@@ -5,3 +5,5 @@ build/
 dist/
 .venv/
 shotcheck_output_*/
+*.log
+APP_TEST_LOG.txt

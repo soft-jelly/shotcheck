@@ -1,5 +1,46 @@
 # ShotCheck
 
+## App
+
+Which take to keep. Drop a clip, pick the move, and read MATCH, MISMATCH, or INCONCLUSIVE.
+
+![Compare takes for tilt up: the tilt-up clip is MATCH, pan and dolly are INCONCLUSIVE, and the labeled CC0 control is MISMATCH](docs/compare_takes.jpg)
+
+Check a clip in the browser without starting ComfyUI. From this repository:
+
+```text
+python -m shotcheck app
+```
+
+After `pip install`, the same server is `shotcheck app` (optional `--port 8765`).
+It prints `http://127.0.0.1:8765/` and listens on that host only. CPU only: no GPU,
+model weights, API key, or network beyond localhost.
+
+Drop a clip, or several takes of one shot. The demo's keep decision is a tilt
+decision: `tilt_up` or `tilt_down`, plus `static`. `pan_right`, `pan_left`,
+`dolly_in`, and `dolly_out` stay selectable, and the dropdown labels each one
+"recorded checks: inconclusive", because the recorded real pan and dolly clips
+returned INCONCLUSIVE. Thresholds are not retuned. The page calls `analyze_video`
+with that trajectory, the same function and thresholds as the `ShotCheckMotionVerifier`
+node. It does not start a ComfyUI graph; `shotcheck run` remains the SDK path.
+
+The page shows a large MATCH, MISMATCH, or INCONCLUSIVE verdict, the chosen
+clip playing muted and looping beside that verdict, a per-window strip with
+each window's verdict, confidence, and measured-label direction, and the
+measured screen-motion label next to the requested move. INCONCLUSIVE means the evidence was weak or
+mixed and is never counted as a pass. Compare takes lists every clip against one
+requested move so a creator can keep the take that matches.
+
+Limits, also printed on the page:
+
+- It measures screen motion, not 3D camera pose.
+- In our recorded checks, real pan and dolly clips returned INCONCLUSIVE.
+- Not a general accuracy benchmark.
+- Clean install verified on a fresh Linux VM (Python 3.13.18, 2026-10-26).
+- This page does not generate video, host a public service, or use LTX as a core model.
+
+## Node and CLI
+
 Check whether a clip's measured screen motion agrees with an intended camera move.
 Run a CPU-only ComfyUI graph through the official Comfy SDK and local API proxy.
 Get per-segment match, mismatch or **inconclusive** evidence, JSON and an overlay.
@@ -70,8 +111,14 @@ In separate terminals, also from `shotcheck-work/`:
 .venv/bin/shotcheck run shotcheck/examples/synthetic_tilt_up.avi --intent tilt_up --out example-result
 ```
 
-Linux commands are provided for the same CPU packages/API, but this submission's
-recorded fresh-copy execution is on Windows; Linux execution is not claimed.
+The app path was verified on a fresh Linux VM on 2026-10-26, Python 3.13.18.
+A new virtual environment followed the commands in this section, with this
+repository copied in place of a clone. From this repository, `python -m shotcheck app`
+printed a localhost URL. That page returned HTTP 200. The bundled
+`examples/synthetic_tilt_up.avi`, checked as tilt up, returned MATCH, measured
+scene_down, 4 of 4, confidence 1.0, the same verdict as on the development
+machine. The ComfyUI server, the proxy, and `shotcheck run` were not part of
+that recorded check.
 ComfyUI upstream setup: https://github.com/Comfy-Org/ComfyUI#manual-install-windows-linux.
 The tested upstream revision is `87ed5a066d9c4660ef42100fd01a888da6994856`
 (ComfyUI 0.42.0); future upstream revisions may need separate validation.
@@ -105,7 +152,7 @@ verifier's fixed thresholds are not tuned for the supplied clip. JSON retains
 the raw `unknown` label; the CLI presents it as **INCONCLUSIVE**, alongside
 confidence, measured component values and reasons in the saved report.
 
-## Platform parts used: Comfy SDK (self-hosted ComfyUI via comfy-api-proxy)
+## Platform parts used: Comfy SDK and Comfy API v2 (self-hosted ComfyUI via the official comfy-api-proxy)
 
 Real application execution calls `comfy_sdk.Comfy.run()` on the local node
 graph, then downloads its `SaveImage` output through the SDK. Uses official
@@ -113,7 +160,8 @@ graph, then downloads its `SaveImage` output through the SDK. Uses official
 deployment, partner API nodes or inference service are involved.
 
 - SDK: https://github.com/Comfy-Org/comfy-python-sdk
-- Local proxy: https://github.com/Comfy-Org/comfy-api-proxy
+- Local proxy ("The Comfy API v2, in front of your own ComfyUI"):
+  https://github.com/Comfy-Org/comfy-api-proxy
 - ComfyUI: https://github.com/Comfy-Org/ComfyUI (separate GPL-3.0 dependency,
   not vendored here). Our node/CLI are MIT. Organizer acceptance remains the
   organizer's decision; platform use is not a promise of contest eligibility.
@@ -124,14 +172,14 @@ Earlier real LTX clips from https://huggingface.co/spaces/Lightricks/LTX-2.5
 were external integration-test inputs only. They and their derived overlays
 are **not bundled in this repository**. Applicable LTX Community License:
 https://github.com/Lightricks/LTX-2/blob/main/LICENSE-2_x.
-No YouTube-team or Grok Imagine media is included.
+No Grok Imagine media is included.
 
 The only bundled video is `examples/synthetic_tilt_up.avi`, our procedural
 CC0 control (see `examples/LICENSE.txt`). It is not LTX-generated footage.
 
 ## Tests
 
-**Verified environments:** Windows, CPU, Python 3.13.4, existing clean venv: 15/15 tests and real local SDK CLI tilt 4/4. Clean Ubuntu package/unit-test acceptance is covered by `.github/workflows/test.yml` (`ubuntu-latest`, Python 3.12); its first CI execution is pending the lead's push. CI uses a fake SDK transport for CLI tests and does not validate the full ComfyUI/proxy/CLI setup.
+**Verified environments:** Windows, CPU, Python 3.13.4, existing clean venv: 24/24 tests and real local SDK CLI tilt 4/4. Clean Ubuntu package/unit-test acceptance is covered by `.github/workflows/test.yml` (`ubuntu-latest`, Python 3.12). CI uses a fake SDK transport for CLI tests and does not validate the full ComfyUI/proxy/CLI setup.
 
 From this repository's root, with its environment's Python:
 

@@ -92,7 +92,20 @@ def main(argv=None):
     command.add_argument("--comfy-url", default="http://127.0.0.1:8188")
     command.add_argument("--proxy-url", default="http://127.0.0.1:8000")
     command.add_argument("--out", help="New output directory; existing directories are never overwritten")
+    app_command = commands.add_parser(
+        "app", help="Serve a localhost page that checks clips with the same verifier as the node",
+    )
+    app_command.add_argument("--port", type=int, default=8765)
     args = parser.parse_args(argv)
+    if args.command == "app":
+        try:
+            from .app import serve
+            serve(port=args.port)
+            return 0
+        except Exception as exc:
+            print(f"ShotCheck error ({type(exc).__name__}): {exc}", file=sys.stderr)
+            print("The app listens on 127.0.0.1 only and needs no ComfyUI, key, or GPU.", file=sys.stderr)
+            return 2
     try:
         return run(args)
     except Exception as exc:
